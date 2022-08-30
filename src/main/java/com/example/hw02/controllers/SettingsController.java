@@ -4,6 +4,7 @@ import com.example.hw02.entities.Settings;
 import com.example.hw02.exceptions.SettingsNotFoundException;
 import com.example.hw02.repositories.SettingsRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +13,8 @@ import java.util.UUID;
 @RestController
 public class SettingsController {
 
-    private final SettingsRepository repository;
-
-    SettingsController(SettingsRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private SettingsRepository repository;
 
     @GetMapping("/settings")
     List<Settings> all(){
@@ -36,7 +34,7 @@ public class SettingsController {
     }
 
     @PutMapping("/settings/{id}")
-    Settings replaceEmployee(@RequestBody Settings newSettings, @PathVariable UUID id) {
+    Settings replaceSettings(@RequestBody Settings newSettings, @PathVariable UUID id) {
 
         return repository.findById(id)
                 .map(settings -> {
@@ -50,7 +48,7 @@ public class SettingsController {
     }
 
     @DeleteMapping("/settings/{id}")
-    void deleteEmployee(@PathVariable UUID id) {
+    void deleteSetting(@PathVariable UUID id) {
         repository.deleteById(id);
     }
 

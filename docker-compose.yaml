@@ -1,0 +1,29 @@
+version: '3.5'
+services:
+  hw02-app:
+    image: 'hw02-docker:latest'
+    build:
+      context: .
+    container_name: hw02-app
+    ports:
+      - "8033:8033"
+    depends_on:
+      - hw02-db
+    environment:
+      - spring_datasource_url=jdbc:postgresql://hw02-db:5433/postgres
+      - spring_datasource_username=docker
+      - spring_datasource_password=docker
+      - spring_jpa_hibernate_ddl-auto=update
+      - spring_jpa_database_platform=org.hibernate.dialect.PostgreSQLDialect
+  hw02-db:
+    image: 'postgres:14.3-alpine'
+    container_name: hw02-db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+    command: -p 5433
+volumes:
+  postgres-data:
+    driver: local
